@@ -1,0 +1,23 @@
+name: Build and core checks
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore Lastlight.sln
+      - name: Build release
+        run: dotnet build Lastlight.sln -c Release --no-restore
+      - name: Release core checks and migration subset
+        run: dotnet run --project src/Lastlight.Checks -c Release --no-build -- src/Lastlight.Desktop/Assets/definitions.json artifacts/ci-release-checks --release-only

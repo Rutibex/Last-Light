@@ -1,0 +1,28 @@
+# .NET / IDE generated products
+**/bin/
+**/obj/
+artifacts/
+.vs/
+.vscode/
+.idea/
+TestResults/
+*.user
+*.suo
+*.rsuser
+*.pdb
+*.cache
+
+# Local game runs and automated test output
+Saves/
+**/Saves/
+*.lastlight
+*.lastlight.bak
+!tests/fixtures/*.lastlight
+*.log
+*-error.txt
+check-output/
+*-output/
+*.dmp
+*.tmp
+.DS_Store
+Thumbs.db

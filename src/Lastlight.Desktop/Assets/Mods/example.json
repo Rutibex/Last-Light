@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "lastlight-example",
+  "version": "1",
+  "requires": {},
+  "content": {
+    "schemaVersion": 1,
+    "recipes": [
+      {
+        "id": "example-packed-ration",
+        "outputId": "meal",
+        "outputCount": 1,
+        "ingredients": {
+          "grain": 2
+        }
+      }
+    ]
+  }
+}

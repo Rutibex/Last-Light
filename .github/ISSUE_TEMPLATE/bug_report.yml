@@ -1,0 +1,41 @@
+name: Bug report
+description: Report a reproducible Lastlight problem
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the observed and expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Start a new colony..."
+    validations:
+      required: true
+  - type: input
+    id: build
+    attributes:
+      label: Lastlight version
+      placeholder: 0.9.0-rc.1
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: Operating system and GPU
+      placeholder: Windows 11 x64 / graphics driver version
+  - type: dropdown
+    id: mods
+    attributes:
+      label: Mods enabled?
+      options: ["No", "Yes", "Unknown"]
+  - type: textarea
+    id: logs
+    attributes:
+      label: Errors, screenshots, additional context
+      description: Review logs and saves for sensitive data before uploading.

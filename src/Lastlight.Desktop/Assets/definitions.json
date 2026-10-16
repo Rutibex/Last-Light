@@ -1,0 +1,956 @@
+{
+  "schemaVersion": 1,
+  "terrain": [
+    {
+      "id": "soil",
+      "name": "Duskgrass soil",
+      "walkable": true,
+      "color": "#646347"
+    },
+    {
+      "id": "sand",
+      "name": "Ashen sand",
+      "walkable": true,
+      "color": "#A58D67"
+    },
+    {
+      "id": "stone",
+      "name": "Basalt outcrop",
+      "walkable": false,
+      "color": "#53545B"
+    },
+    {
+      "id": "water",
+      "name": "Cold water",
+      "walkable": false,
+      "color": "#345B64"
+    },
+    {
+      "id": "floor",
+      "name": "Ancient flagstone",
+      "walkable": true,
+      "color": "#7D7770"
+    },
+    {
+      "id": "void",
+      "name": "Open shaft",
+      "walkable": false,
+      "color": "#11131C"
+    },
+    {
+      "id": "rubble",
+      "name": "Collapsed debris",
+      "walkable": true,
+      "color": "#5E5B62"
+    }
+  ],
+  "entities": [
+    {
+      "id": "settler",
+      "name": "Settler",
+      "kind": "Person",
+      "color": "#DBA570",
+      "maxStack": 1
+    },
+    {
+      "id": "grazer",
+      "name": "Horned dusk grazer",
+      "kind": "Creature",
+      "color": "#B3A187",
+      "maxStack": 1
+    },
+    {
+      "id": "wood",
+      "name": "Dry timber",
+      "kind": "ItemStack",
+      "color": "#98603B",
+      "maxStack": 75
+    },
+    {
+      "id": "grain",
+      "name": "Duskgrain",
+      "kind": "ItemStack",
+      "color": "#D6B767",
+      "maxStack": 75
+    },
+    {
+      "id": "wall",
+      "name": "Ruined basalt wall",
+      "kind": "Building",
+      "color": "#706D72",
+      "maxStack": 1
+    },
+    {
+      "id": "relic",
+      "name": "Dormant daylight engine",
+      "kind": "Artifact",
+      "color": "#8AD1C1",
+      "maxStack": 1
+    },
+    {
+      "id": "meal",
+      "name": "Simple meal",
+      "kind": "ItemStack",
+      "color": "#C4AE81",
+      "maxStack": 75
+    },
+    {
+      "id": "fungus",
+      "name": "Twilight fungus",
+      "kind": "ItemStack",
+      "color": "#C4AE81",
+      "maxStack": 75
+    },
+    {
+      "id": "blocks",
+      "name": "Basalt blocks",
+      "kind": "ItemStack",
+      "color": "#C4AE81",
+      "maxStack": 75
+    },
+    {
+      "id": "brass",
+      "name": "Sun-brass scraps",
+      "kind": "ItemStack",
+      "color": "#C4AE81",
+      "maxStack": 75
+    },
+    {
+      "id": "door",
+      "name": "Door",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "fence",
+      "name": "Fence",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "bed",
+      "name": "Bed",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "table",
+      "name": "Table",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "stool",
+      "name": "Stool",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "shelf",
+      "name": "Shelf",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "stove",
+      "name": "Stove",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "workbench",
+      "name": "Workbench",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "study",
+      "name": "Study",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "barricade",
+      "name": "Barricade",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "trap",
+      "name": "Trap",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "torch",
+      "name": "Torch",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "hearth",
+      "name": "Hearth",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "generator",
+      "name": "Generator",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "conduit",
+      "name": "Conduit",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "circle",
+      "name": "Circle",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "hitch",
+      "name": "Hitch",
+      "kind": "Building",
+      "color": "#A89070",
+      "maxStack": 1
+    },
+    {
+      "id": "raider",
+      "name": "Ash-road scavenger",
+      "kind": "Creature",
+      "maxStack": 1,
+      "color": "#BD6352"
+    },
+    {
+      "id": "medicine",
+      "name": "Herbal medicine",
+      "kind": "ItemStack",
+      "maxStack": 75,
+      "color": "#78AD91"
+    },
+    {
+      "id": "arrows",
+      "name": "Bone-tipped arrows",
+      "kind": "ItemStack",
+      "maxStack": 75,
+      "color": "#C7B798"
+    },
+    {
+      "id": "bow",
+      "name": "Duskwood bow",
+      "kind": "ItemStack",
+      "maxStack": 1,
+      "color": "#B8956D"
+    },
+    {
+      "id": "spear",
+      "name": "Bronze spear",
+      "kind": "ItemStack",
+      "maxStack": 1,
+      "color": "#C9B899"
+    },
+    {
+      "id": "sword",
+      "name": "Salvaged sword",
+      "kind": "ItemStack",
+      "maxStack": 1,
+      "color": "#B7C4CB"
+    },
+    {
+      "id": "padded-armor",
+      "name": "Padded coat",
+      "kind": "ItemStack",
+      "maxStack": 1,
+      "color": "#758E9F"
+    },
+    {
+      "id": "fiber",
+      "name": "Duskflax fiber",
+      "kind": "ItemStack",
+      "maxStack": 75,
+      "color": "#C2BE9F"
+    },
+    {
+      "id": "stairs",
+      "name": "Stone stair landing",
+      "kind": "Building",
+      "maxStack": 1,
+      "color": "#9C9793"
+    },
+    {
+      "id": "column",
+      "name": "Support column",
+      "kind": "Building",
+      "maxStack": 1,
+      "color": "#8E8586"
+    },
+    {
+      "id": "sunlamp",
+      "name": "Dawn reflector",
+      "kind": "Building",
+      "maxStack": 1,
+      "color": "#DFC889"
+    },
+    {
+      "id": "spark",
+      "name": "Sun-salt reagent",
+      "kind": "ItemStack",
+      "maxStack": 75,
+      "color": "#E4A55C"
+    },
+    {
+      "id": "lens",
+      "name": "Memory-glass lens",
+      "kind": "ItemStack",
+      "maxStack": 1,
+      "color": "#82D5D0"
+    },
+    {
+      "id": "observatory-tablet",
+      "name": "Observatory field tablet",
+      "kind": "Artifact",
+      "maxStack": 1,
+      "color": "#BCB086"
+    },
+    {
+      "id": "formula-folio",
+      "name": "Keeper\u2019s formula folio",
+      "kind": "Artifact",
+      "maxStack": 1,
+      "color": "#A9A4D3"
+    },
+    {
+      "id": "seed-cache",
+      "name": "Sealed seed reliquary",
+      "kind": "Artifact",
+      "maxStack": 1,
+      "color": "#91B987"
+    },
+    {
+      "id": "vault-guardian",
+      "name": "Observatory warder",
+      "kind": "Creature",
+      "maxStack": 1,
+      "color": "#9B738E"
+    },
+    {
+      "id": "guardian-focus",
+      "name": "Warder focus",
+      "kind": "ItemStack",
+      "maxStack": 1,
+      "color": "#CF8FCE"
+    },
+    {
+      "id": "sealed-door",
+      "name": "Sealed observatory hatch",
+      "kind": "Building",
+      "maxStack": 1,
+      "color": "#8B7190"
+    },
+    {
+      "id": "f-floodgate",
+      "name": "Floodgate",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-pump",
+      "name": "Electric water pump",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-battery",
+      "name": "Battery",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-heater",
+      "name": "Electric room heater",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-vent",
+      "name": "Heat vent",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-solar",
+      "name": "Solar generator",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-shaft",
+      "name": "Mechanical shaft",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-wheel",
+      "name": "Waterwheel",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-mill",
+      "name": "Mechanical mill",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-resonator",
+      "name": "Resonance source",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-channel",
+      "name": "Thaumic channel",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-ward",
+      "name": "Containment ward",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-smelter",
+      "name": "Electric smelter",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-kiln",
+      "name": "Glass kiln",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-loom",
+      "name": "Loom",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-fermenter",
+      "name": "Fermentation vat",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-filter",
+      "name": "Water filter",
+      "kind": "Building",
+      "color": "#83B8AD",
+      "maxStack": 1
+    },
+    {
+      "id": "f-flour",
+      "name": "Flour",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    },
+    {
+      "id": "f-ore",
+      "name": "Copper ore",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    },
+    {
+      "id": "f-ingot",
+      "name": "Copper ingot",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    },
+    {
+      "id": "f-parts",
+      "name": "Machine parts",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    },
+    {
+      "id": "f-sand",
+      "name": "Silica sand",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    },
+    {
+      "id": "f-glass",
+      "name": "Glass",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    },
+    {
+      "id": "f-cloth",
+      "name": "Woven cloth",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    },
+    {
+      "id": "f-ferment",
+      "name": "Fungal ferment",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    },
+    {
+      "id": "f-herbs",
+      "name": "Medicinal herbs",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    },
+    {
+      "id": "f-meat",
+      "name": "Fresh meat",
+      "kind": "ItemStack",
+      "color": "#BEA781",
+      "maxStack": 75
+    }
+  ],
+  "materials": [
+    {
+      "id": "basalt",
+      "name": "Basalt",
+      "mass": 2.8,
+      "hardness": 8,
+      "resonance": 0.1
+    },
+    {
+      "id": "timber",
+      "name": "Dry timber",
+      "mass": 0.7,
+      "hardness": 2,
+      "resonance": 0.2
+    },
+    {
+      "id": "sun-brass",
+      "name": "Sun-brass",
+      "mass": 8.4,
+      "hardness": 5,
+      "resonance": 4
+    },
+    {
+      "id": "f-copper",
+      "name": "Copper",
+      "mass": 8.9,
+      "hardness": 3,
+      "resonance": 0.3
+    },
+    {
+      "id": "f-memory-glass",
+      "name": "Memory glass",
+      "mass": 2.5,
+      "hardness": 2,
+      "resonance": 6
+    },
+    {
+      "id": "f-woven-cloth",
+      "name": "Woven cloth",
+      "mass": 0.3,
+      "hardness": 1,
+      "resonance": 0.1
+    },
+    {
+      "id": "f-ceramic",
+      "name": "Living ceramic",
+      "mass": 2,
+      "hardness": 6,
+      "resonance": 2
+    },
+    {
+      "id": "f-iron",
+      "name": "Iron",
+      "mass": 7.8,
+      "hardness": 7,
+      "resonance": 0.1
+    }
+  ],
+  "recipes": [
+    {
+      "id": "timber-frame",
+      "outputId": "wood",
+      "outputCount": 1,
+      "ingredients": {
+        "wood": 2
+      }
+    },
+    {
+      "id": "simple-meal",
+      "outputId": "meal",
+      "outputCount": 1,
+      "ingredients": {
+        "grain": 1
+      }
+    },
+    {
+      "id": "fungus-meal",
+      "outputId": "meal",
+      "outputCount": 1,
+      "ingredients": {
+        "fungus": 1
+      }
+    },
+    {
+      "id": "d-medicine",
+      "outputId": "medicine",
+      "outputCount": 1,
+      "ingredients": {
+        "fungus": 2
+      }
+    },
+    {
+      "id": "d-arrows",
+      "outputId": "arrows",
+      "outputCount": 5,
+      "ingredients": {
+        "wood": 1
+      }
+    },
+    {
+      "id": "d-bow",
+      "outputId": "bow",
+      "outputCount": 1,
+      "ingredients": {
+        "wood": 10,
+        "fiber": 4
+      }
+    },
+    {
+      "id": "d-spear",
+      "outputId": "spear",
+      "outputCount": 1,
+      "ingredients": {
+        "wood": 8,
+        "brass": 1
+      }
+    },
+    {
+      "id": "d-coat",
+      "outputId": "padded-armor",
+      "outputCount": 1,
+      "ingredients": {
+        "fiber": 10
+      }
+    },
+    {
+      "id": "e-sun-salt",
+      "outputId": "spark",
+      "outputCount": 2,
+      "ingredients": {
+        "brass": 1,
+        "fungus": 1
+      }
+    },
+    {
+      "id": "f-make-flour",
+      "outputId": "f-flour",
+      "outputCount": 2,
+      "ingredients": {
+        "grain": 3
+      }
+    },
+    {
+      "id": "f-flour-meal",
+      "outputId": "meal",
+      "outputCount": 2,
+      "ingredients": {
+        "f-flour": 2
+      }
+    },
+    {
+      "id": "f-meat-meal",
+      "outputId": "meal",
+      "outputCount": 2,
+      "ingredients": {
+        "f-meat": 2
+      }
+    },
+    {
+      "id": "f-smelt",
+      "outputId": "f-ingot",
+      "outputCount": 2,
+      "ingredients": {
+        "f-ore": 3
+      }
+    },
+    {
+      "id": "f-make-parts",
+      "outputId": "f-parts",
+      "outputCount": 3,
+      "ingredients": {
+        "f-ingot": 2
+      }
+    },
+    {
+      "id": "f-make-glass",
+      "outputId": "f-glass",
+      "outputCount": 2,
+      "ingredients": {
+        "f-sand": 3
+      }
+    },
+    {
+      "id": "f-lens",
+      "outputId": "lens",
+      "outputCount": 1,
+      "ingredients": {
+        "f-glass": 3,
+        "spark": 1
+      }
+    },
+    {
+      "id": "f-make-cloth",
+      "outputId": "f-cloth",
+      "outputCount": 2,
+      "ingredients": {
+        "fiber": 3
+      }
+    },
+    {
+      "id": "f-garment",
+      "outputId": "padded-armor",
+      "outputCount": 1,
+      "ingredients": {
+        "f-cloth": 5
+      }
+    },
+    {
+      "id": "f-make-ferment",
+      "outputId": "f-ferment",
+      "outputCount": 2,
+      "ingredients": {
+        "fungus": 3
+      }
+    },
+    {
+      "id": "f-herbal-medicine",
+      "outputId": "medicine",
+      "outputCount": 2,
+      "ingredients": {
+        "f-herbs": 3,
+        "f-ferment": 1
+      }
+    }
+  ],
+  "weapons": [
+    {
+      "id": "bow",
+      "damage": 10,
+      "range": 9,
+      "cooldown": 90,
+      "accuracy": 0.8,
+      "injuryKind": "Cut",
+      "ammoId": "arrows"
+    },
+    {
+      "id": "spear",
+      "damage": 8,
+      "range": 1,
+      "cooldown": 90,
+      "accuracy": 0.8,
+      "injuryKind": "Cut"
+    },
+    {
+      "id": "sword",
+      "damage": 12,
+      "range": 1,
+      "cooldown": 60,
+      "accuracy": 0.85,
+      "injuryKind": "Cut"
+    },
+    {
+      "id": "guardian-focus",
+      "damage": 7,
+      "range": 6,
+      "cooldown": 120,
+      "accuracy": 0.7,
+      "injuryKind": "Burn"
+    }
+  ],
+  "formulae": [
+    {
+      "id": "ember",
+      "name": "Ember of the Borrowed Dawn",
+      "memoryCost": 2,
+      "preparationWork": 90,
+      "castTicks": 90,
+      "range": 6,
+      "durationTicks": 7200,
+      "radius": 4,
+      "effect": "Light",
+      "reagents": {
+        "spark": 1
+      },
+      "strain": 15
+    },
+    {
+      "id": "door",
+      "name": "The Patient Door",
+      "memoryCost": 1,
+      "preparationWork": 60,
+      "castTicks": 90,
+      "range": 4,
+      "durationTicks": 5400,
+      "radius": 0,
+      "effect": "Seal",
+      "reagents": {
+        "brass": 1
+      },
+      "strain": 10
+    },
+    {
+      "id": "flesh",
+      "name": "Arithmetic of Returning Flesh",
+      "memoryCost": 2,
+      "preparationWork": 90,
+      "castTicks": 90,
+      "range": 4,
+      "durationTicks": 7200,
+      "radius": 0,
+      "effect": "Flesh",
+      "reagents": {
+        "medicine": 1
+      },
+      "strain": 20
+    },
+    {
+      "id": "porter",
+      "name": "The Invisible Porter",
+      "memoryCost": 1,
+      "preparationWork": 60,
+      "castTicks": 60,
+      "range": 6,
+      "durationTicks": 3600,
+      "radius": 0,
+      "effect": "Porter",
+      "reagents": {
+        "grain": 1
+      },
+      "strain": 10
+    }
+  ],
+  "materialPhysics": [
+    {
+      "id": "basalt",
+      "toughness": 8,
+      "flammability": 0,
+      "insulation": 0.7,
+      "corrosionResistance": 0.9,
+      "conductivity": 0.05,
+      "decay": 0
+    },
+    {
+      "id": "timber",
+      "toughness": 3,
+      "flammability": 1,
+      "insulation": 0.8,
+      "corrosionResistance": 0.3,
+      "conductivity": 0.02,
+      "decay": 0.02
+    },
+    {
+      "id": "sun-brass",
+      "toughness": 5,
+      "flammability": 0,
+      "insulation": 0.1,
+      "corrosionResistance": 0.8,
+      "conductivity": 1,
+      "decay": 0
+    },
+    {
+      "id": "f-copper",
+      "toughness": 4,
+      "flammability": 0,
+      "insulation": 0.1,
+      "corrosionResistance": 0.3,
+      "conductivity": 1,
+      "decay": 0
+    },
+    {
+      "id": "f-memory-glass",
+      "toughness": 1,
+      "flammability": 0,
+      "insulation": 0.4,
+      "corrosionResistance": 0.95,
+      "conductivity": 0.1,
+      "decay": 0
+    },
+    {
+      "id": "f-woven-cloth",
+      "toughness": 1,
+      "flammability": 1,
+      "insulation": 0.9,
+      "corrosionResistance": 0.2,
+      "conductivity": 0.01,
+      "decay": 0.05
+    },
+    {
+      "id": "f-ceramic",
+      "toughness": 7,
+      "flammability": 0,
+      "insulation": 0.8,
+      "corrosionResistance": 0.9,
+      "conductivity": 0.05,
+      "decay": 0.01
+    },
+    {
+      "id": "f-iron",
+      "toughness": 8,
+      "flammability": 0,
+      "insulation": 0.1,
+      "corrosionResistance": 0.2,
+      "conductivity": 0.8,
+      "decay": 0
+    }
+  ]
+}

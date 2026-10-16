@@ -1,0 +1,73 @@
+namespace Lastlight.Core;
+public sealed class SolarForecast {public long Id{get;set;}public string Kind{get;set;}="Season";public long IssuedAt{get;set;}public long DueAt{get;set;}public int Stage{get;set;}public string Text{get;set;}="";public bool Resolved{get;set;}}
+public sealed class RegionalRefuge {public long FactionId{get;set;}public int Level{get;set;}public int PartsSpent{get;set;}public int WoodSpent{get;set;}public int BrassSpent{get;set;}public int Migrants{get;set;}}
+public sealed class CampaignProject {public string Id{get;set;}="Sun";public long HostId{get;set;}public long WorkerId{get;set;}public int Phase{get;set;}public int Work{get;set;}public bool Active{get;set;}public bool Completed{get;set;}public string Status{get;set;}="Not commissioned";public Dictionary<string,int> Spent{get;set;}=new();}
+public sealed class PatronCompact {public long Id{get;set;}public long FactionId{get;set;}public string Title{get;set;}="Keeper of the Dawn";public string Demand{get;set;}="Open access";public long DueAt{get;set;}public int BaselineSessions{get;set;}public bool Active{get;set;}=true;public int Payments{get;set;}public string Result{get;set;}="Funded patronage accepted";}
+public sealed class SanctuaryClaim {public long Id{get;set;}public long FactionId{get;set;}public long SiteId{get;set;}public string State{get;set;}="Offered";public long DueAt{get;set;}public string Result{get;set;}="Requests two refuge places";}
+public sealed class DirectorIncident {public long Id{get;set;}public long Tick{get;set;}public string Kind{get;set;}="";public string Cause{get;set;}="";public long FactionId{get;set;}public string Result{get;set;}="";}
+public sealed class SolarState
+{
+ public bool Initialized{get;set;}public bool Enabled{get;set;}public long NextId{get;set;}=1;public ulong RandomState{get;set;}public string Mode{get;set;}="Open Twilight";public string Director{get;set;}="The Chronicler";public int Stage{get;set;}public int SeasonDays{get;set;}=12;public int Luminosity{get;set;}=100;public int Instability{get;set;}public long StartedAt{get;set;}public long NextBoundary{get;set;}public long AnnouncedBoundary{get;set;}public long LastDay{get;set;}public long NextFlareAt{get;set;}public long FlareUntil{get;set;}public bool FlareAnnounced{get;set;}public int Flares{get;set;}public int RaidIntensity{get;set;}=35;public int Scarcity{get;set;}=20;public int InstabilitySetting{get;set;}=50;public int Disease{get;set;}=100;public int Stress{get;set;}=100;public long NextIncidentAt{get;set;}public int Incidents{get;set;}public string DirectorStatus{get;set;}="Reading settlement security";public string Finale{get;set;}="";public long CompletedAt{get;set;}public bool SunRestored{get;set;}public Dictionary<int,int> BaseClimate{get;set;}=new();public List<SolarForecast> Forecasts{get;set;}=[];public List<RegionalRefuge> Refuges{get;set;}=[];public List<CampaignProject> Projects{get;set;}=[];public List<PatronCompact> Patrons{get;set;}=[];public List<SanctuaryClaim> Claims{get;set;}=[];public List<DirectorIncident> History{get;set;}=[];public HashSet<long> Evacuees{get;set;}=[];public List<string> PreservedKnowledge{get;set;}=[];
+}
+public sealed partial class World
+{
+ public SolarState Solar{get;set;}=new();
+ public static readonly string[] SolarModes=["Open Twilight","Slow Dusk","Last Century","Custom"];
+ public static readonly string[] SolarStages=["Unsteady Dawn","Long Twilight","Red Convulsions","Scattered Refuges","Lastlight"];
+ public static readonly string[] Directors=["The Chronicler","The Capricious Star","The Quiet Archivist"];
+ public static readonly string[] FinaleIds=["Sun","Vessel","Ark","Federation","Archive"];
+ public static readonly string[] FinaleNames=["Regional artificial sun","Evacuation vessel","Subterranean ark","Federation of refuges","Living archive"];
+ private static readonly int[] StageLuminosity=[92,65,42,22,8];
+ public void EnsureSolar(){if(!Solar.Initialized){Solar.Initialized=true;Solar.RandomState=(ulong)(uint)Seed+441879;Solar.LastDay=Tick/TicksPerDay;}}
+ public void EnableSolar(){EnsureSolar();if(Solar.Enabled)return;if(!Region.Enabled||!Society.Enabled)throw new InvalidOperationException("Enable the living region and institutions first.");Solar.Enabled=true;Danger.RaidsEnabled=Solar.RaidIntensity>0;Solar.StartedAt=Tick;Solar.LastDay=Tick/TicksPerDay;Solar.NextIncidentAt=Tick+TicksPerDay*3;foreach(var tile in Region.Tiles)Solar.BaseClimate[tile.Y*12+tile.X]=tile.Climate;foreach(var faction in Region.Factions)Solar.Refuges.Add(new(){FactionId=faction.Id});foreach(string id in FinaleIds)Solar.Projects.Add(new(){Id=id});Chronicle("Campaign","Solar campaign observations enabled. Open Twilight has no decline or universal destruction timer.",site:Region.HomeSiteId);}
+ public double NaturalSolarLight()=>!Solar.Enabled||Solar.Mode=="Open Twilight"||Solar.SunRestored?100:Math.Clamp(Solar.Luminosity*(Tick%TicksPerDay<TicksPerHour*6?1-Solar.Instability/500.0:1),0,100);
+ public double SolarPowerFactor()=>NaturalSolarLight()/100;
+ public double SolarAmbient(double weather)=>!Solar.Enabled?weather:Math.Max(-30,weather-(100-NaturalSolarLight())/6+(Tick<Solar.FlareUntil?8:0));
+ public int SolarCropTicks(CropState crop)=>!Solar.Enabled||crop.OutputId=="fungus"||Position(crop.Cell).Z>0||LightAt(crop.Cell)>NaturalSolarLight()+1?30:Math.Max(1,(int)(30*SolarPowerFactor()));
+ public double CampaignDiseaseFactor()=>Solar.Enabled?Solar.Disease/100.0:1;
+ public double CampaignStressFactor()=>Solar.Enabled?Solar.Stress/100.0:1;
+ public int RegionalSolarProduction(RegionFaction faction,int production)=>!Solar.Enabled?production:Math.Max(1,(production+Solar.Refuges.First(r=>r.FactionId==faction.Id).Level*2)*(100-Solar.Scarcity/2)/100);
+ public int RefugeCapacity()=>Entities.Count(e=>e.DefinitionId=="bed"&&!e.Forbidden&&TemperatureAt(Index(e.X,e.Y,e.Z)) is >=8 and <=38&&WaterDepth(Index(e.X,e.Y,e.Z))<2);
+ public IEnumerable<ColonyAlert> CampaignAlerts(){if(!Solar.Enabled)yield break;var forecast=Solar.Forecasts.LastOrDefault(f=>!f.Resolved);if(forecast!=null)yield return new("solar-forecast",forecast.Kind=="Flare"?"Solar flare forecast":"Solar stage forecast",forecast.Text,"World");if(Solar.Stage==4&&Solar.Finale=="")yield return new("lastlight","Lastlight: choose or sustain a refuge","There is no universal destruction timer. Inspect World for feasible finale projects.","World");if(Solar.Patrons.Any(p=>p.Active&&p.DueAt-Tick<TicksPerDay))yield return new("patron-due","Patron obligation due","Fulfill or refuse its explicit demand in World > Politics.","World");}
+ public int FlareForecastHours()=>Society.Institutions.Any(i=>i.Kind=="Library"&&i.Sessions>=4)?12:6;
+ public string SolarRules()=>Solar.SunRestored?"The regional artificial sun is operational: no further decline or flares. Ordinary weather, needs, politics and configured hazards continue.":Solar.Mode=="Open Twilight"?"Solar decline disabled. Weather, needs and configured hazards continue; indefinite settlement play.":"Stages change every "+Solar.SeasonDays+" days, with a full-day forecast. Lastlight has no universal kill timer: finish a project or sustain your refuge. Flares are warned "+FlareForecastHours()+" hours ahead; four library sessions improve the horizon to twelve.";
+ private void SolarForecast(string kind,long due,int stage,string text){Solar.Forecasts.Add(new(){Id=Solar.NextId++,Kind=kind,IssuedAt=Tick,DueAt=due,Stage=stage,Text=text});if(Solar.Forecasts.Count>32)Solar.Forecasts.RemoveAt(0);Chronicle("Forecast",text,site:Region.HomeSiteId);Danger.PauseSerial++;}
+ private void UpdateSolarStage()
+ {
+  Solar.Luminosity=Solar.Mode=="Open Twilight"||Solar.SunRestored?100:StageLuminosity[Solar.Stage];Solar.Instability=Solar.Mode=="Open Twilight"?0:(Solar.Stage==2?70:15+Solar.Stage*10)*Solar.InstabilitySetting/50;
+  Solar.Instability=Math.Min(100,Solar.Instability);int cooling=(100-Solar.Luminosity)/6;
+  foreach(var tile in Region.Tiles)tile.Climate=Math.Clamp(Solar.BaseClimate[tile.Y*12+tile.X]-cooling,-10,49);
+ }
+ private void AdvanceSolar(Definitions d)
+ {
+  EnsureSolar();if(!Solar.Enabled)return;
+  if(Solar.Mode!="Open Twilight"&&!Solar.SunRestored&&Solar.Stage<4)
+  {
+   if(Tick>=Solar.NextBoundary-TicksPerDay&&Solar.AnnouncedBoundary!=Solar.NextBoundary){Solar.AnnouncedBoundary=Solar.NextBoundary;SolarForecast("Season",Solar.NextBoundary,Solar.Stage+1,"Observatory forecast: "+SolarStages[Solar.Stage+1]+" begins on day "+(Solar.NextBoundary/TicksPerDay+1)+". Surface light "+StageLuminosity[Solar.Stage+1]+"; shelter, food storage and alternate crops remain available.");}
+   if(Tick>=Solar.NextBoundary){Solar.Stage++;Solar.NextBoundary+=Solar.SeasonDays*TicksPerDay;UpdateSolarStage();foreach(var f in Solar.Forecasts.Where(f=>f.Kind=="Season"&&!f.Resolved&&f.DueAt<=Tick))f.Resolved=true;Chronicle("SolarStage",SolarStages[Solar.Stage]+" began at its forecast seasonal boundary; luminosity "+Solar.Luminosity+".",site:Region.HomeSiteId);Danger.PauseSerial++;AdaptRegionalRefuges();if(Solar.Stage>=2&&Solar.NextFlareAt==0&&Solar.InstabilitySetting>0)Solar.NextFlareAt=Tick+TicksPerDay*2;}
+  }
+  if(Solar.Stage>=2&&Solar.Mode!="Open Twilight"&&!Solar.SunRestored&&Solar.InstabilitySetting>0)
+  {
+   if(Solar.NextFlareAt>0&&!Solar.FlareAnnounced&&Tick>=Solar.NextFlareAt-TicksPerHour*FlareForecastHours()){Solar.FlareAnnounced=true;SolarForecast("Flare",Solar.NextFlareAt,Solar.Stage,"Forecast flare in "+FlareForecastHours()+" game hours: roof exposed residents and devices; delay expeditions or pack one cloth per traveler. Duration six hours.");}
+   if(Solar.NextFlareAt>0&&Tick>=Solar.NextFlareAt){Solar.FlareUntil=Tick+TicksPerHour*6;Solar.Flares++;foreach(var f in Solar.Forecasts.Where(f=>f.Kind=="Flare"&&!f.Resolved))f.Resolved=true;ExposeTravelersToFlare(d);var random=new StableRandom(Solar.RandomState);Solar.NextFlareAt=Solar.FlareUntil+TicksPerDay*(3+random.Next(4));Solar.RandomState=random.State;Solar.FlareAnnounced=false;Chronicle("SolarFlare","The forecast flare began; exposed travel and unroofed equipment face explicit strain.",site:Region.HomeSiteId);Danger.PauseSerial++;}
+  }
+  if(Tick<Solar.FlareUntil&&Tick%TicksPerHour==0)
+  {foreach(var e in Entities.Where(e=>e.Z==0&&!Slice.Roofs.Contains(Index(e.X,e.Y,e.Z))&&!IsAway(e.Id)).ToArray()){if(Body(e.Id) is {Dead:false}&&Colony.People.ContainsKey(e.Id))InflictWound(e.Id,"left-arm","Burn",1,0,d);if(Physical.Devices.TryGetValue(e.Id,out var device)){device.Condition=Math.Max(0,device.Condition-2);if(device.Condition<40)device.Fault=true;device.Cause="Forecast flare strained exposed equipment";}}}
+  long day=Tick/TicksPerDay;if(day>Solar.LastDay){Solar.LastDay=day;AdvancePatronObligations();AdvanceSolarMigration();}
+  AdvanceCampaignDirector(d);
+ }
+ private void ExposeTravelersToFlare(Definitions d)
+ {foreach(var party in Region.Parties.Where(p=>p.State is "Outbound" or "Returning")){int living=party.Members.Count(id=>Body(id) is {Dead:false});if(party.Cargo.GetValueOrDefault("f-cloth")>=living){party.Cargo["f-cloth"]-=living;Chronicle("FlareShelter","Packed cloth shielded the traveling party; real cloth was consumed.",site:party.DestinationId);}else{foreach(long id in party.Members.Where(id=>Body(id) is {Dead:false}))InflictWound(id,"left-arm","Burn",3,0,d);Chronicle("FlareExposure","Travelers without sufficient cloth suffered the forecast exposure.",site:party.DestinationId);}}}
+ private void AdaptRegionalRefuges()
+ {foreach(var refuge in Solar.Refuges){var f=Region.Factions.First(f=>f.Id==refuge.FactionId);if(refuge.Level<3&&f.Reserves.GetValueOrDefault("f-parts")>=4*(refuge.Level+1)&&f.Reserves.GetValueOrDefault("wood")>=10*(refuge.Level+1)&&f.Reserves.GetValueOrDefault("brass")>=4){int parts=4*(refuge.Level+1),wood=10*(refuge.Level+1);f.Reserves["f-parts"]-=parts;f.Reserves["wood"]-=wood;f.Reserves["brass"]-=4;refuge.Level++;refuge.PartsSpent+=parts;refuge.WoodSpent+=wood;refuge.BrassSpent+=4;Chronicle("Adaptation",f.Name+" funded refuge level "+refuge.Level+" from parts, wood and brass reserves.",f.Id);}}
+  if(Solar.Stage>=3&&Solar.Claims.Count==0){var faction=Region.Factions.OrderByDescending(f=>f.Grievance).ThenBy(f=>f.Id).First();Solar.Claims.Add(new(){Id=Solar.NextId++,FactionId=faction.Id,SiteId=Region.HomeSiteId,DueAt=Tick+TicksPerDay*7});faction.Claims.Add("sanctuary:"+Region.HomeSiteId);Chronicle("SanctuaryClaim",faction.Name+" requests two places in the refuge; sharing, refusal and independence are explicit choices.",faction.Id,Region.HomeSiteId);Danger.PauseSerial++;}
+ }
+ private void AdvanceSolarMigration()
+ {if(Solar.Stage<1||Solar.Mode=="Open Twilight")return;foreach(var source in Solar.Refuges.Where(r=>r.Level==0)){var f=Region.Factions.First(f=>f.Id==source.FactionId);var destination=Solar.Refuges.Where(r=>r.Level>source.Level).OrderByDescending(r=>r.Level).ThenBy(r=>r.FactionId).FirstOrDefault();if(destination==null||f.Population<=20)continue;var receiver=Region.Factions.First(f=>f.Id==destination.FactionId);if(receiver.Population>=9999||receiver.Reserves.GetValueOrDefault("grain")<2)continue;f.Population--;receiver.Population++;receiver.Reserves["grain"]-=2;destination.Migrants++;Chronicle("SolarMigration","A resident migrated from "+f.Name+" to the better supplied "+receiver.Name+" refuge.",f.Id);}}
+ private void CarrySolarIntoSuccessor(World next)
+ {if(!Solar.Enabled)return;next.Solar=CopyLegacy(Solar);next.Solar.LastDay=next.Tick/TicksPerDay;foreach(var project in next.Solar.Projects){project.HostId=0;project.WorkerId=0;if(!project.Completed){project.Phase=0;project.Work=0;project.Active=false;project.Status="Earlier work retained in the retired site; recommission locally";}}
+  next.Solar.Evacuees.Clear();next.Solar.NextIncidentAt=next.Tick+TicksPerDay*3;next.Solar.FlareUntil=0;next.Solar.NextFlareAt=0;next.Solar.FlareAnnounced=false;
+  if(next.Solar.Mode!="Open Twilight"&&!next.Solar.SunRestored){next.Solar.Stage=Math.Min(4,(int)((next.Tick-next.Solar.StartedAt)/(next.Solar.SeasonDays*TicksPerDay)));next.Solar.NextBoundary=next.Tick+next.Solar.SeasonDays*TicksPerDay;next.UpdateSolarStage();}if(next.Solar.Mode!="Open Twilight"&&!next.Solar.SunRestored&&next.Solar.Stage>=2&&next.Solar.InstabilitySetting>0)next.Solar.NextFlareAt=next.Tick+TicksPerDay*2;foreach(var f in next.Solar.Forecasts)f.Resolved=true;next.Chronicle("SolarSuccession","The successor inherits "+SolarStages[next.Solar.Stage]+" at luminosity "+next.Solar.Luminosity+" after the stated retirement interval.",site:next.Region.HomeSiteId);
+ }
+}
+public static class SolarWorldGenerator {public static World Create(Definitions d,int seed){var w=InstitutionsWorldGenerator.Create(d,seed);w.EnableSolar();return w;}}

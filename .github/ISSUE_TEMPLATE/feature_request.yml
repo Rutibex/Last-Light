@@ -1,0 +1,18 @@
+name: Feature request
+description: Suggest a colony, interface or gameplay improvement
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Which problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed behavior
+      description: Please describe how this would work for players.
+    validations:
+      required: true
